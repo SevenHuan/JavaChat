@@ -2,8 +2,10 @@ package chat;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
-import java.awt.GridLayout;
+import java.awt.TextArea;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -15,16 +17,15 @@ public class ChatClient extends Frame {
 	private static final long serialVersionUID = 1L;
 	
 	TextField msgText = new TextField();
-	TextField msgArea = new TextField(); 
+	TextArea msgArea = new TextArea(); 
 	
 
 	public void launch() {
-		//ÉèÖÃÎ»ÖÃ,´óĞ¡,²¼¾Ö¹ÜÀíÆ÷
-		setLocation(200,200);
-		setSize(380,500);
-		setLayout(new GridLayout(2,1));
+		//è®¾ç½®ä½ç½®,å¤§å°
+		setLocation(400,300);
+		setSize(300,500);
 		
-		//Ìí¼Ó´°¿Ú¹Ø±Õ¼àÌı
+		//æ·»åŠ çª—å£å…³é—­ç›‘å¬
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -32,18 +33,31 @@ public class ChatClient extends Frame {
 			}
 		});
 		
-		//Ìí¼Ó×é¼ş
-		add(msgText, BorderLayout.NORTH);
-		add(msgArea, BorderLayout.SOUTH);
+		//æ·»åŠ ç»„ä»¶
+		add(msgText, BorderLayout.SOUTH);
+		add(msgArea, BorderLayout.NORTH);
 		pack();
 		
-		//ÉèÖÃ´°¿Ú¿É¼û
+		//æ–‡æœ¬æ¡†å‘é€äº‹ä»¶
+		msgText.addActionListener(new msgTextListener());
+		
+		//è®¾ç½®çª—å£å¯è§
 		setVisible(true);
 	}
 	
+	private class msgTextListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String s = msgText.getText().trim();
+			msgArea.setText(s);
+			msgText.setText("");
+		}
+
+	}
 	
 	public static void main(String[] args) {
-		//Æô¶¯´°¿Ú
+		//å¯åŠ¨çª—å£
 		new ChatClient().launch();
 	}
 	
