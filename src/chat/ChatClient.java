@@ -8,14 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class ChatClient extends Frame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
 	TextField msgText = new TextField();
 	TextArea msgArea = new TextArea(); 
 	
@@ -52,6 +53,19 @@ public class ChatClient extends Frame {
 			String s = msgText.getText().trim();
 			msgArea.setText(s);
 			msgText.setText("");
+
+			try {
+				Socket socket = new Socket("127.0.0.1",7899);
+				OutputStream os = socket.getOutputStream();
+				DataOutputStream dos = new DataOutputStream(os);
+				dos.writeUTF(s);
+				dos.flush();
+				dos.close();
+			
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
 		}
 
 	}
@@ -59,6 +73,7 @@ public class ChatClient extends Frame {
 	public static void main(String[] args) {
 		//启动窗口
 		new ChatClient().launch();
+		
 	}
 	
 }
